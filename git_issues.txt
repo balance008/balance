@@ -11,3 +11,11 @@
 
 – 输入以下命令，回车即可
 git config --global --unset http.proxy
+
+查看当前配置github 
+git config --global -l
+
+
+
+balance008
+yezi18376547432

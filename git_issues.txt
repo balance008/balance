@@ -1,0 +1,13 @@
+提交代码时，偶尔会出现提交失败的情况，并提示：OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to github.com:443
+
+原因：
+是Git的Http代理的问题，Git支持三种协议：git://、ssh:// 和 http://，本来push的时候应该走ssh隧道的，但是因为设置了http代理，所以就走了http的代理，于是就提交不了了。
+
+解决办法
+方法一：这种情况偶尔出现，可能时当时的网络问题，可以换个wifi或者热点，或者，，过一会再试试（如果还不行，用方法2）
+方法二：既然是因为设置了http代理，那取消该设置即可
+– 打开需要提交的项目的本地根目录
+– 直接右键单击（不要选中某个文件夹），选择Git Bash Here，进入命令行
+
+– 输入以下命令，回车即可
+git config --global --unset http.proxy

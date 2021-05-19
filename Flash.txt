@@ -1,0 +1,75 @@
+Flash_MCU
+
+两个版本：
+1.MCU/mcu目录下的mcu程序是release版本的(实际要测试版本)
+2.MCU/目录下分别提供了E1烧写的release， NO_Reset版本的hex文件(烧写镜像时候要次版本)
+烧写方法：
+使用瑞萨工具E1烧写.hex 文件
+
+MCU version的串口输入如下命令:
+tsmcutest
+connect 127.0.0.1 9527 255
+get mcuversion
+
+
+
+Flash_SOC：
+
+原来有SOC：
+
+串口进入ADB模式（仅对黑色口有效）
+1、在串口中打开ADB模式
+tstransfertest
+init 127.0.0.1 2407 2
+exec 1 ls –l /          // 前面是数字1 后面都是字母l
+exec 1 setprop persist.vendor.usb.mode adb
+
+串口reset -f进入flashboot 模式
+default-userdebug-13.CTR010-20210508_182635-VB-fastboot-B-mario_A13_signed\common\build
+在这个路径下打开cmd，输入python fastboot_complete.py，接着回车键即可开始烧录，烧录成功会有successful的提示
+
+
+空板子：先刷写uboot 
+
+√在串口命令行查看SOC版本号，通过串口输入：
+cat /vm/images/version-release.txt
+或者在中控中看
+
+
+替换仪表功能appfs
+
+串口进入ADB模式（仅对黑色口有效）
+1、在串口中打开ADB模式
+tstransfertest
+init 127.0.0.1 2407 2
+exec 1 ls –l /          // 前面是数字1 后面都是字母l
+exec 1 setprop persist.vendor.usb.mode adb
+
+查看ADB
+adb root
+adb devices
+adb push appfs.tar /share
+
+解压替换
+mount -uw /appfs
+cd /var
+tar -xvf /share/appfs.tar
+mount -uw /appfs
+cp -rf /var/appfs/* /appfs/
+chmod -R 777 /appfs
+sync 
+
+√在串口命令行查看仪表应用的版本号：
+use -i /appfs/application/A13_CLIENT
+
+
+
+
+退出ADB模式
+tstransfertest
+init 127.0.0.1 2407 2
+exec 1 ls –l /          // 前面是数字1 后面都是字母l
+exec 1 setprop persist.vendor.usb.mode usb
+
+
+

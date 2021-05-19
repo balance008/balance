@@ -20,11 +20,5 @@ git config --global -l
 balance008
 yezi18376547432
 
-
+配置记住账号密码
 git config --global credential.helper store
-
-
-
-
-qwe
-s
